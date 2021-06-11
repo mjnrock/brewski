@@ -119,7 +119,7 @@ app.use(function (req, res, next) {
  * A basic routing example
  */
 app.get("/", function(req, res, next){
-    res.send('Hello World!')
+    res.send("Hello World!")
     res.end();
 });
 
@@ -132,9 +132,9 @@ app.listen(wsport, () => {
     lookup(hostname(), (err, ip) => {
 		const url = `http://${ ip }:${ httpport }`;
 
-        // QRCode.Generator.toString(url, { type: "terminal" }).then(data => {
-        //     console.log(`Link to:   ${ url }`);
-        //     console.log(data);
-        // });
+        QRCode.Generator.toString(url, { type: "terminal" }).then(data => {
+            console.log(`Link to:   ${ url }`);
+            console.log(data);
+        });
     });
 });

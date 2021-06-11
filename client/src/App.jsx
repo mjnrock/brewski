@@ -5,28 +5,41 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import Routes from "./routes/package";
 
-import InputNetwork from "./lib/InputNetwork";
-import InputMouse from "./lib/InputMouse";
-import InputTouch from "./lib/InputTouch";
-
 export const Context = React.createContext();
+
+export function eventPacker(e) {
+	switch(e.type) {
+		default:
+			return {
+				type: e.type,
+				x: e.clientX,
+				y: e.clientY,
+				timeStamp: Date.now(),
+			}
+	};
+};
 
 const ws = WS.QuickSetup({
     connect: true,
-
-    // url: `ws://localhost:3001`,
     protocol: `ws`,
-    host: `localhost`,
+    host: `192.168.86.200`,
     port: 3001,
 });
-
-const inputnet = InputNetwork.QuickSetup(window, [ InputMouse, InputTouch ]);
 
 const mainnet = new Agency.Event.Network({}, {
     default: {
 		// "*": (msg) => console.log(`[Pre]:`, msg.type, msg.data),
-		[ InputMouse.Signal.CLICK ]: (msg) => console.log(`[CLICK]:`, msg.type, msg.data),
-        event: function(msg, { ws }) {
+		motion: function(msg, { network }) {
+			console.log(`[Motion]:`, msg.type, msg.data);
+
+			network.state = msg.data;
+		},
+		orientation: function(msg, { network }) {
+			console.log(`[Orientation]:`, msg.type, msg.data);
+            
+            network.state = msg.data;
+		},
+		event: function(msg, { ws }) {
 			const [ e ] = msg.data;
 
             ws.sendToServer("event", eventPacker(e));
@@ -42,24 +55,6 @@ const mainnet = new Agency.Event.Network({}, {
     },
 });
 ws.addListener(mainnet, { addToDefaultGlobal: "ws" });
-inputnet.addListener(mainnet, { addToDefaultGlobal: "inputnet" });
-
-
-export function eventPacker(e) {
-	switch(e.type) {
-		default:
-			return {
-				type: e.type,
-				x: e.clientX,
-				y: e.clientY,
-				timeStamp: Date.now(),
-			}
-	};
-};
-
-// const listener = mainnet.addListener();
-// console.log(listener)
-
 
 export function App() {		
 	return (
