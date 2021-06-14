@@ -21,8 +21,8 @@ export function Default() {
 		ctx.drawImage(
 			state.canvas,
 			...state.grid.offset,
-			state.screen.canvas.width,
-			state.screen.canvas.height,
+			state.screen.canvas.width * state.config.scale.scale,
+			state.screen.canvas.height * state.config.scale.scale,
 			0, 0,
 			state.screen.canvas.width,
 			state.screen.canvas.height
