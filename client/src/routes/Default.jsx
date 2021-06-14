@@ -7,6 +7,7 @@ import VirtualCanvas from "./../components/VirtualCanvas";
 
 export function Default() {
 	const { dispatch } = useContextNetwork(Context, "network");
+	// const { state, dispatch } = useContextNetwork(Context, "network");
 	const { state } = useContext(Context);
 
 	useEffect(() => {
@@ -29,9 +30,17 @@ export function Default() {
 		);
 	});
 
+	let cursor = "default";
+	if(state.config.movement.isMoving === 2) {
+		cursor = "grabbing";
+	} else if(state.config.movement.isMoving) {
+		cursor = "grab";
+	}
+
 	return (
 		<div style={{
 			overflow: "hidden",
+			cursor: cursor,
 		}}>
 			{/* <VirtualCanvas canvas={ state.canvas } style={{
 				backgroundColor: "#ccc",
