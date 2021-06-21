@@ -29,6 +29,7 @@ const mainnet = new Agency.Event.Network(state, {
 	default: {
 		force: (msg, { setState }) => {
 			setState(Math.random());
+			// console.log(state.grid.offset);
 		}
 	},
 });
