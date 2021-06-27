@@ -1,10 +1,12 @@
 import React from "react";
+import Agency from "@lespantsfancy/agency";
+import WS from "@lespantsfancy/agency/lib/modules/websocket/Client";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import ScrollToTop from "./ScrollToTop";
 import Routes from "./routes/package";
 
-import stateObj from "./data/state";
+import stateObj from "./TestStateObj.js"
 
 export const Context = React.createContext();
 
